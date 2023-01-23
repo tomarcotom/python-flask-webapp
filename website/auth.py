@@ -4,6 +4,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from . import db
 
+auth = Blueprint('auth', __name__)
+
 def validate_login(password1, password2):
   # add validations that you want 
   return password1 == password2
@@ -16,9 +18,9 @@ def create_user(email, firstName, password):
     login_user(new_user , remember=True)
   else:
     flash('Username already exists', category='error')
+
   return redirect(url_for('views.home'))
 
-auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -37,11 +39,14 @@ def login():
 
   return render_template("login.html", user=current_user)
 
+
 @auth.route('/logout')
 @login_required #run this function only when the user is logged in 
 def logout():
   logout_user()
+
   return redirect(url_for('auth.login'))
+
 
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -54,6 +59,5 @@ def signup():
       create_user(email, firstName, password1)
     else:
       flash('passwords are not the same!', category='error')
-
 
   return render_template("signup.html", user=current_user)

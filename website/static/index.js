@@ -1,3 +1,4 @@
+
 async function deleteNote(noteId) {
   await fetch("/delete-note", {
     method: "POST",
