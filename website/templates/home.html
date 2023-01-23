@@ -1,4 +1,23 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %}
 {% block content %}
-<h1> This is a content coming from home.html</h1>
+<h1 align="center">Notes</h1>
+<form method="POST">
+<ul class="list-group list-group-flush" id="notes">
+  {% for note in user.notes %}
+  <li class="list-group-item">
+    {{ note.text }}
+    <!-- <button type="button" class="close" id="delete-note" onClick="deleteNote({{ note.id }})"> -->
+    
+      <button type="submit" class="close" name="delete-note" value={{ note.id }} >
+        <span aria-hidden="true">&times;</span>
+      </button>
+  </li>
+  {% endfor %}
+</ul>
+  <textarea name="note" id="note" class="form-control"></textarea>
+  <br />
+  <div align="center">
+    <button type="submit" class="btn btn-primary" name="add-note" value="add-note">Add Note</button>
+  </div>
+</form>
 {% endblock %}
