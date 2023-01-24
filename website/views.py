@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from .models import Note
 from . import db
@@ -11,8 +11,10 @@ def home():
   if request.method == 'POST':
     if request.form.get('delete-note'):
       delete_note(request.form.get('delete-note')) # note.id
-    elif request.form.get('add-note'):
+      return redirect(url_for("views.home", user=current_user))
+    if request.form.get('add-note'):
       add_note(request.form.get('note'))
+      return redirect(url_for("views.home", user=current_user))
 
   return render_template("home.html", user=current_user)
 
